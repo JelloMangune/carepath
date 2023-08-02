@@ -19,7 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        // 'email',
         'password',
         'username',
         'user_type',
@@ -45,4 +45,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'user_type' => 'int', // Cast the 'user_type' attribute to integer
     ];
+
+    /**
+     * Define the relationship between User and Barangay.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class);
+    }
+
+    /**
+     * Define the relationship between User and ImmunizationRecords.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function immunizationRecords()
+    {
+        return $this->hasMany(ImmunizationRecord::class, 'administered_by');
+    }
 }
