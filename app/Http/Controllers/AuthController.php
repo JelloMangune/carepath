@@ -15,16 +15,24 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-
+    
         $user = User::where('username', $request->username)->first();
-
+    
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+    
         $token = $user->createToken('token-name')->plainTextToken;
-        return response()->json(['token' => $token], 200);
+        
+        return response()->json([
+            'token' => $token,
+            'user_type' => $user->user_type,
+            'username' => $user->username,
+            'name' => $user->name,
+            'id' => $user->id,
+        ], 200);
     }
+    
 
     public function register(Request $request)
     {

@@ -21,7 +21,10 @@ class UserController extends Controller
         }
 
         // Get all users
-        $users = User::all();
+        $users = User::where('user_type', '!=', 0)
+                 ->with('barangay') // Eager load the associated barangay
+                 ->orderBy('barangay_id')
+                 ->get();
 
         return response()->json(['data' => $users], 200);
     }
