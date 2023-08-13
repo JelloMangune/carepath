@@ -49,4 +49,19 @@ class BarangayController extends Controller
         $barangay->delete();
         return response()->json(['message' => 'Barangay deleted successfully']);
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $barangay = Barangay::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:0,1',
+        ]);
+
+        $barangay->update(['status' => $request->input('status')]);
+
+        return response()->json(['message' => 'Barangay status updated successfully', 'data' => $barangay]);
+    }
+
+    
 }

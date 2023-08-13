@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('location')->nullable();
+            $table->tinyInteger('status')->default(1); // 0 for inactive, 1 for active
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

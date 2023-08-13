@@ -14,9 +14,9 @@ class BarangaysTableSeeder extends Seeder
     public function run()
     {
         DB::table('barangays')->insert([
-            ['name' => 'Lourdes North'],
-            ['name' => 'Ninoy Aquino'],
-            ['name' => 'Salapungan'],
+            ['name' => 'Lourdes North', 'status' => 1, 'location' => 'Lourdes North'],
+            ['name' => 'Ninoy Aquino', 'status' => 1, 'location' => 'Ninoy Aquino'],
+            ['name' => 'Salapungan', 'status' => 1, 'location' => 'Salapungan'],
         ]);
     }
 }
