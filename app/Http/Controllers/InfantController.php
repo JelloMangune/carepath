@@ -48,11 +48,15 @@ class InfantController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'birthdate' => 'required|date',
             // Add other validation rules as needed
         ]);
 
-        $infant = Infant::create($request->all());
+        // Generate a unique tracking number
+        $trackingNumber = $this->generateUniqueTrackingNumber();
+
+        // Create the infant with the generated tracking number
+        $infant = Infant::create(array_merge($request->all(), ['tracking_number' => $trackingNumber]));
+
         return response()->json(['message' => 'Infant created successfully', 'data' => $infant], 201);
     }
 
@@ -97,5 +101,22 @@ class InfantController extends Controller
         $infant->delete();
 
         return response()->json(['message' => 'Infant deleted successfully']);
+    }
+
+    /**
+     * Generate a unique tracking number.
+     *
+     * @return string
+     */
+    private function generateUniqueTrackingNumber()
+    {
+        $trackingNumber = mt_rand(1000000000, 9999999999); // Generate a 10-digit number
+
+        // Check if the generated tracking number already exists in the database
+        while (Infant::where('tracking_number', $trackingNumber)->exists()) {
+            $trackingNumber = mt_rand(1000000000, 9999999999);
+        }
+
+        return $trackingNumber;
     }
 }

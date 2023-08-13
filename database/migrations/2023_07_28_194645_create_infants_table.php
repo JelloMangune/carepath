@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('infants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('tracking_number', 10); // Added tracking_number column
             $table->enum('sex', ['Male', 'Female', 'Other']);
             $table->date('birth_date');
             $table->string('family_serial_number')->nullable();
@@ -24,12 +25,12 @@ return new class extends Migration
             $table->string('mother_name')->nullable();
             $table->string('contact_number')->nullable();
             $table->string('complete_address')->nullable();
+            $table->enum('status', [0, 1, 2])->default(0); // Added status column
             $table->timestamps();
 
             $table->foreign('barangay_id')->references('id')->on('barangays');
         });
     }
-
 
     /**
      * Reverse the migrations.

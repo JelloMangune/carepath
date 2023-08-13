@@ -26,6 +26,8 @@ class Infant extends Model
         'mother_name',
         'contact_number',
         'complete_address',
+        'status',
+        'tracking_number', 
     ];
 
     /**

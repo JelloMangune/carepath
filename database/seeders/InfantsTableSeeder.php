@@ -23,6 +23,7 @@ class InfantsTableSeeder extends Seeder
             // Infant in Lourdes North
             [
                 'name' => 'John Doe',
+                'tracking_number' => '1234567890', // Replace with actual tracking number
                 'sex' => 'Male',
                 'birth_date' => '2023-01-15',
                 'family_serial_number' => 'FSN12345',
@@ -33,11 +34,13 @@ class InfantsTableSeeder extends Seeder
                 'mother_name' => 'Jennifer Doe',
                 'contact_number' => '1234567890',
                 'complete_address' => '123 Main Street, City',
+                'status' => 1, // Not vaccinated
             ],
 
             // Infant in Ninoy Aquino
             [
                 'name' => 'Jane Smith',
+                'tracking_number' => '9876543210', // Replace with actual tracking number
                 'sex' => 'Female',
                 'birth_date' => '2023-02-20',
                 'family_serial_number' => 'FSN67890',
@@ -48,11 +51,13 @@ class InfantsTableSeeder extends Seeder
                 'mother_name' => 'Mary Smith',
                 'contact_number' => '9876543210',
                 'complete_address' => '456 Oak Avenue, Town',
+                'status' => 1, // Partially vaccinated
             ],
 
             // Infant in Salapungan
             [
                 'name' => 'James Johnson',
+                'tracking_number' => '5432167890', // Replace with actual tracking number
                 'sex' => 'Male',
                 'birth_date' => '2023-03-10',
                 'family_serial_number' => 'FSN24680',
@@ -63,6 +68,7 @@ class InfantsTableSeeder extends Seeder
                 'mother_name' => 'Emily Johnson',
                 'contact_number' => '5432167890',
                 'complete_address' => '789 Elm Street, Village',
+                'status' => 1, // Fully vaccinated
             ],
         ]);
     }
