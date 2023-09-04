@@ -29,15 +29,34 @@ class VaccineDoseController extends Controller
      */
     public function show($id)
     {
-        // Get the vaccine dose by ID
-        $vaccineDose = VaccineDose::find($id);
+        // Get the vaccine by ID
+        $vaccine = VaccineDose::find($id);
 
-        if (!$vaccineDose) {
-            return response()->json(['error' => 'Vaccine dose not found'], 404);
+        if (!$vaccine) {
+            return response()->json(['error' => 'Vaccine not found'], 404);
         }
 
-        return response()->json(['data' => $vaccineDose], 200);
+        // Get all the doses associated with the vaccine
+        $vaccineDoses = VaccineDose::where('vaccine_id', $vaccine->id)->get();
+
+        if ($vaccineDoses->isEmpty()) {
+            return response()->json(['error' => 'No doses found for this vaccine'], 404);
+        }
+
+        // Create an array to store dose information including IDs
+        $doseInfo = [];
+
+        foreach ($vaccineDoses as $dose) {
+            $doseInfo[] = [
+                'id' => $dose->id, // Include the dose ID
+                'dose_number' => $dose->dose_number,
+                'months_to_take' => $dose->months_to_take,
+            ];
+        }
+
+        return response()->json(['data' => $doseInfo], 200);
     }
+
 
     /**
      * Store a new vaccine dose (admin only).

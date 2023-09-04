@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('vaccine_id');
             $table->integer('dose_number');
-            $table->decimal('months_to_take', 4, 2);
+            $table->decimal('months_to_take', 5, 2);
             $table->timestamps();
     
             $table->foreign('vaccine_id')->references('id')->on('vaccines');
