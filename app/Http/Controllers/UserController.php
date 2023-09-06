@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Barangay;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -20,11 +21,12 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Get all users
+        // Get all users with associated barangay information if barangay_id is not null
         $users = User::where('user_type', '!=', 0)
-                 ->with('barangay') // Eager load the associated barangay
-                 ->orderBy('barangay_id')
-                 ->get();
+                    ->with(['barangay:id,name']) // Eager load the associated barangay and select only 'id' and 'name' columns
+                    ->whereNotNull('barangay_id') // Conditionally eager load for users with a non-null barangay_id
+                    ->orderBy('barangay_id')
+                    ->get();
 
         return response()->json(['data' => $users], 200);
     }

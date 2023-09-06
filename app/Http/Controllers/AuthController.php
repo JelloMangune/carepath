@@ -39,21 +39,25 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users', // Add email validation
             'password' => 'required|min:6|confirmed',
             'user_type' => 'required|integer', // Add user_type validation
-            'barangay' => 'required|string', // Add barangay validation
+            'barangay_id' => 'required|integer', // Add barangay validation
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
+            'email' => $request->email, // Assign the email
             'password' => Hash::make($request->password),
             'user_type' => $request->user_type, // Assign the user_type
-            'barangay' => $request->barangay,   // Assign the barangay
+            'barangay_id' => $request->barangay_id, // Assign the barangay
         ]);
 
         $token = $user->createToken('token-name')->plainTextToken;
-        return response()->json(['token' => $token], 201);
+        $response = ['data' => ['token' => $token]];
+
+        return response()->json($response, 201);
     }
 
     public function logout(Request $request)
