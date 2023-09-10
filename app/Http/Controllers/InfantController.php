@@ -119,4 +119,27 @@ class InfantController extends Controller
 
         return $trackingNumber;
     }
+
+    public function getFilteredInfants($barangay_id, $year = null)
+    {
+        // Create a query builder for infants
+        $query = Infant::query();
+
+        // If a specific barangay_id is provided, filter infants by barangay
+        if ($barangay_id != 0) {
+            $query->where('barangay_id', $barangay_id);
+        }
+
+        // If a year is provided, add a filter for the birth year
+        if (!is_null($year)) {
+            // Extract the year part from the birth_date column and compare it
+            $query->whereYear('birth_date', '=', $year);
+        }
+
+        // Fetch infants based on the filters
+        $infants = $query->get();
+
+        return response()->json(['data' => $infants], 200);
+    }
+
 }
