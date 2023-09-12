@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('mother_name')->nullable();
             $table->string('contact_number')->nullable();
             $table->string('complete_address')->nullable();
-            $table->enum('status', [0, 1, 2])->default(0); // Added status column
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
 
             $table->foreign('barangay_id')->references('id')->on('barangays');

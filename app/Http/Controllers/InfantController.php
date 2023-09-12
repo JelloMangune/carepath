@@ -94,13 +94,13 @@ class InfantController extends Controller
         $infant = Infant::find($id);
 
         if (!$infant) {
-            return response()->json(['error' => 'Infant not found'], 404);
+            return response()->json(['data' => ['error' => 'Infant not found'], 'message' => null], 404);
         }
 
         // Delete the infant
         $infant->delete();
 
-        return response()->json(['message' => 'Infant deleted successfully']);
+        return response()->json(['data' => ['message' => 'Infant deleted successfully'], 'error' => null]);
     }
 
     /**
