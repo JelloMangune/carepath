@@ -73,13 +73,13 @@ class InfantController extends Controller
         $infant = Infant::find($id);
 
         if (!$infant) {
-            return response()->json(['error' => 'Infant not found'], 404);
+            return response()->json(['data' => null, 'error' => 'Infant not found'], 404);
         }
 
         // Update the infant's attributes
         $infant->update($request->all());
 
-        return response()->json(['message' => 'Infant updated successfully', 'data' => $infant], 200);
+        return response()->json(['data' => ['message' => 'Infant updated successfully', 'infant' => $infant]], 200);
     }
 
     /**
@@ -140,6 +140,42 @@ class InfantController extends Controller
         $infants = $query->get();
 
         return response()->json(['data' => $infants], 200);
+    }
+
+    public function viewImmunizationHistory($id)
+    {
+        // Get the infant by ID
+        $infant = Infant::find($id);
+
+        if (!$infant) {
+            return response()->json(['error' => 'Infant not found'], 404);
+        }
+
+        // Get the immunization records for the infant
+        $immunizationRecords = $infant->immunizationRecords;
+
+        // Prepare the response data
+        $responseData = [
+            'Infant name' => $infant->name,
+            'Immunization history' => [],
+        ];
+
+        // Iterate through immunization records and format the data
+        foreach ($immunizationRecords as $record) {
+            $administeredByName = $record->administered_by ? $record->administered_by : 'Unknown User';
+        
+            $formattedRecord = [
+                'Immunization Date' => $record->immunization_date,
+                'Vaccine Name' => $record->vaccine->name,
+                'Vaccine Dose' => 'Dose ' . $record->dose_number,
+                'Administered By' => $administeredByName,
+                'Remarks' => $record->remarks,
+            ];
+        
+            $responseData['Immunization history'][] = $formattedRecord;
+        }
+        
+        return response()->json(['data' => $responseData], 200);
     }
 
 }

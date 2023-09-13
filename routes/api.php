@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/infants/{id}', [InfantController::class, 'update']); // Update an infant by ID
     Route::delete('/infants/{id}', [InfantController::class, 'destroy']); // Delete an infant by ID
     Route::get('/getFilteredInfants/{barangay_id}/{year?}', [InfantController::class, 'getFilteredInfants']);
+    Route::get('/infants/{id}/immunization-history', [InfantController::class, 'viewImmunizationHistory']);
 
     // Vaccine resource routes
     Route::get('/vaccines', [VaccineController::class, 'index']); // Get all vaccines
