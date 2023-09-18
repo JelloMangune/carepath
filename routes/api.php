@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/immunization-records', [ImmunizationRecordController::class, 'store']);
     Route::put('/immunization-records/{id}', [ImmunizationRecordController::class, 'update']);
     Route::delete('/immunization-records/{id}', [ImmunizationRecordController::class, 'destroy']);
+    Route::get('/filtered-immunization-records/{barangay_id}/{year?}', [ImmunizationRecordController::class, 'getFilteredImmunizationRecords']);
 
 });
 

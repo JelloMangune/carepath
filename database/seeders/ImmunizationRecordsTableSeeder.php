@@ -31,7 +31,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 1,
                 'immunization_date' => '2023-02-20',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (1.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Lourdes North', // Changed to string
             ],
             [
@@ -40,7 +40,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 2,
                 'immunization_date' => '2023-03-20',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (2.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Lourdes North', // Changed to string
             ],
             [
@@ -49,7 +49,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 3,
                 'immunization_date' => '2023-04-20',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (3.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Lourdes North', // Changed to string
             ],
 
@@ -60,7 +60,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 1,
                 'immunization_date' => '2023-02-25',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (1.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Ninoy Aquino', // Changed to string
             ],
             [
@@ -69,7 +69,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 2,
                 'immunization_date' => '2023-03-25',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (2.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Ninoy Aquino', // Changed to string
             ],
             [
@@ -78,7 +78,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 3,
                 'immunization_date' => '2023-04-25',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (3.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Ninoy Aquino', // Changed to string
             ],
 
@@ -89,7 +89,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 1,
                 'immunization_date' => '2023-03-10',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (1.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Salapungan', // Changed to string
             ],
             [
@@ -98,7 +98,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 2,
                 'immunization_date' => '2023-04-10',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (2.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Salapungan', // Changed to string
             ],
             [
@@ -107,7 +107,7 @@ class ImmunizationRecordsTableSeeder extends Seeder
                 'vaccine_id' => 4,
                 'dose_number' => 3,
                 'immunization_date' => '2023-05-10',
-                'remarks' => 'Received Diphtheria, Pertussis, Tetanus Vaccine (3.5 months).',
+                'remarks' => 'Good',
                 'administered_by' => 'Health Care Worker Salapungan', // Changed to string
             ],
         ]);

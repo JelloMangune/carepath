@@ -15,11 +15,26 @@ class VaccineDoseController extends Controller
      */
     public function index()
     {
-        // Get all vaccine doses
-        $vaccineDoses = VaccineDose::all();
+        // Get all vaccine doses with associated vaccine information
+        $vaccineDoses = VaccineDose::with('vaccine')->get();
 
-        return response()->json(['data' => $vaccineDoses], 200);
+        // Prepare the response data
+        $response = [];
+        foreach ($vaccineDoses as $dose) {
+            $response[] = [
+                'id' => $dose->id,
+                'vaccine_id' => $dose->vaccine_id,
+                'dose_number' => $dose->dose_number,
+                'months_to_take' => $dose->months_to_take,
+                'created_at' => $dose->created_at,
+                'updated_at' => $dose->updated_at,
+                'vaccine_name' => $dose->vaccine->name,
+            ];
+        }
+
+        return response()->json(['data' => $response], 200);
     }
+
 
     /**
      * Get a single vaccine dose by ID.
@@ -74,8 +89,8 @@ class VaccineDoseController extends Controller
         // Validate the request data
         $request->validate([
             'vaccine_id' => 'required|exists:vaccines,id',
-            'dose_number' => 'required|integer',
-            'months_to_take' => 'required|numeric',
+            'dose_number' => 'required',
+            'months_to_take' => 'required',
             // Add other validation rules as needed
         ]);
 
