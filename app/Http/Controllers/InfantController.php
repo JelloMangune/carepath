@@ -165,8 +165,10 @@ class InfantController extends Controller
             $administeredByName = $record->administered_by ? $record->administered_by : 'Unknown User';
         
             $formattedRecord = [
+                'Id' => $record->id,
                 'Immunization Date' => $record->immunization_date,
                 'Vaccine Name' => $record->vaccine->name,
+                'Vaccination Location' => $record->barangay_id,
                 'Vaccine Dose' => 'Dose ' . $record->dose_number,
                 'Administered By' => $administeredByName,
                 'Remarks' => $record->remarks,

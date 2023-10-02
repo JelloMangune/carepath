@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete a user by ID
 
     // Barangay resource routes
+    Route::get('/fetch-all-barangays', [BarangayController::class, 'fetch']);
     Route::get('/barangays', [BarangayController::class, 'index']); // Get all barangays
     Route::get('/barangays/{id}', [BarangayController::class, 'show']); // Get a single barangay by ID
     Route::post('/barangays', [BarangayController::class, 'store']); // Create a new barangay

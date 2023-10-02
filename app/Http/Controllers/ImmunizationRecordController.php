@@ -109,13 +109,13 @@ class ImmunizationRecordController extends Controller
         $record = ImmunizationRecord::find($id);
 
         if (!$record) {
-            return response()->json(['error' => 'Immunization record not found'], 404);
+            return response()->json(['data' => ['error' => 'Immunization record not found'], 'message' => null], 404);
         }
 
         $record->delete();
-
-        return response()->json(['message' => 'Immunization record deleted successfully']);
+        return response()->json(['data' => ['message' => 'Immunization record deleted successfully'], 'error' => null]);
     }
+
 
     public function getFilteredImmunizationRecords($barangay_id, $year = null)
     {
@@ -147,9 +147,11 @@ class ImmunizationRecordController extends Controller
             // Format the response to include infant_name and vaccine_name
             $formattedRecords = $immunizationRecords->map(function ($record) {
                 return [
+                    'id' => $record->id,
                     'infant_name' => $record->infant->name,
                     'vaccine_name' => $record->vaccine->name,
                     'dose_number' => $record->dose_number,
+                    'barangay_id' => $record->barangay_id,
                     'immunization_date' => $record->immunization_date,
                     'administered_by' => $record->administered_by,
                     'remarks' => $record->remarks,

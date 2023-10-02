@@ -15,21 +15,25 @@ class VaccineDoseController extends Controller
      */
     public function index()
     {
-        // Get all vaccine doses with associated vaccine information
-        $vaccineDoses = VaccineDose::with('vaccine')->get();
+        // Get all vaccine doses with associated vaccine information where the vaccine's status is 1
+        $vaccineDoses = VaccineDose::with(['vaccine' => function ($query) {
+            $query->where('status', 1);
+        }])->get();
 
         // Prepare the response data
         $response = [];
         foreach ($vaccineDoses as $dose) {
-            $response[] = [
-                'id' => $dose->id,
-                'vaccine_id' => $dose->vaccine_id,
-                'dose_number' => $dose->dose_number,
-                'months_to_take' => $dose->months_to_take,
-                'created_at' => $dose->created_at,
-                'updated_at' => $dose->updated_at,
-                'vaccine_name' => $dose->vaccine->name,
-            ];
+            if ($dose->vaccine) {
+                $response[] = [
+                    'id' => $dose->id,
+                    'vaccine_id' => $dose->vaccine_id,
+                    'dose_number' => $dose->dose_number,
+                    'months_to_take' => $dose->months_to_take,
+                    'created_at' => $dose->created_at,
+                    'updated_at' => $dose->updated_at,
+                    'vaccine_name' => $dose->vaccine->name,
+                ];
+            }
         }
 
         return response()->json(['data' => $response], 200);

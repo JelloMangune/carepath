@@ -7,9 +7,15 @@ use App\Models\Barangay;
 
 class BarangayController extends Controller
 {
-    public function index()
+    public function fetch()
     {
         $barangays = Barangay::all();
+        return response()->json(['data' => $barangays]);
+    }
+
+    public function index()
+    {
+        $barangays = Barangay::where('status', 1)->get();
         return response()->json(['data' => $barangays]);
     }
 
