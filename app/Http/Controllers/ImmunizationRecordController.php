@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ImmunizationRecord;
+use App\Models\Infant;
 
 class ImmunizationRecordController extends Controller
 {
@@ -67,12 +68,14 @@ class ImmunizationRecordController extends Controller
         // Create a new record if no matching record is found
         $record = ImmunizationRecord::create($request->all());
 
+        // Update the infant's status to 1
+        Infant::where('id', $request->input('infant_id'))->update(['status' => 1]);
+
         return response()->json([
             'message' => 'Immunization record created successfully',
             'data' => $record,
         ]);
     }
-
 
     /**
      * Update an immunization record by ID.

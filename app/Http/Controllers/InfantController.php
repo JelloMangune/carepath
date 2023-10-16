@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Infant;
+use Illuminate\Support\Facades\Auth;
 
 class InfantController extends Controller
 {
@@ -14,8 +15,28 @@ class InfantController extends Controller
      */
     public function index()
     {
-        // Get all infants
-        $infants = Infant::all();
+        $user = Auth::user();
+        $userBarangayId = $user->barangay_id;
+
+        $query = Infant::query();
+
+        // Check if the authenticated user is not an admin (user_type not equal to 0)
+        if ($user->user_type !== 0) {
+            if (!is_null($userBarangayId)) {
+                // If the user has a barangay_id, filter infants based on it
+                $query->where('barangay_id', $userBarangayId);
+            } else {
+                // If the user has no barangay_id, return no infants (you can adjust this logic)
+                return response()->json(['data' => []], 200);
+            }
+        } else {
+            // If the user is an admin, return all infants
+            $query->whereHas('barangay', function ($query) {
+                $query->where('status', 1);
+            });
+        }
+
+        $infants = $query->orderBy('barangay_id')->orderBy('birth_date', 'desc')->get();
 
         return response()->json(['data' => $infants], 200);
     }

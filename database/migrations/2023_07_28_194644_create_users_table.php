@@ -16,14 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->nullable();
+            // Add foreign key to relate 'barangay_id' column with 'barangays' table
+            $table->unsignedBigInteger('barangay_id')->nullable();
+            $table->foreign('barangay_id')->references('id')->on('barangays')->onDelete('set null');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-    
-            // Add foreign key to relate 'barangay_id' column with 'barangays' table
-            $table->unsignedBigInteger('barangay_id')->nullable();
-            $table->foreign('barangay_id')->references('id')->on('barangays')->onDelete('set null');
         });
 
         Schema::table('users', function (Blueprint $table) {

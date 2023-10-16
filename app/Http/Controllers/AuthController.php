@@ -16,7 +16,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
     
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->with('barangay')->first();
     
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -30,6 +30,7 @@ class AuthController extends Controller
             'username' => $user->username,
             'name' => $user->name,
             'id' => $user->id,
+            'barangay_id' => $user->barangay_id
         ], 200);
     }
     
