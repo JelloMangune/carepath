@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ImmunizationRecord;
 use App\Models\Infant;
+use Illuminate\Support\Facades\Auth;
 
 class ImmunizationRecordController extends Controller
 {
@@ -15,9 +16,55 @@ class ImmunizationRecordController extends Controller
      */
     public function index()
     {
-        $records = ImmunizationRecord::all();
-        return response()->json(['data' => $records], 200);
+        $user = Auth::user();
+        $userBarangayId = $user->barangay_id;
+
+        try {
+            // Create a query builder for immunization records
+            $query = ImmunizationRecord::query();
+
+            // If a specific barangay_id is provided and it's not 0, filter records by barangay
+            if ($user->user_type !== 0) {
+                if (!is_null($userBarangayId)) {
+                    $query->where('barangay_id', $userBarangayId);
+                } else {
+                    return response()->json(['data' => []], 200);
+                }
+            }
+            // If user_type is 0 (admin), do not add any specific filtering; return all records.
+
+            // Eager load the related Infant and Vaccine models and select the columns you need
+            $query->with(['infant:id,name', 'vaccine:id,name']);
+            $query->orderBy('immunization_date', 'desc');
+            // Fetch immunization records based on the filters
+            $records = $query->get();
+
+            // Check if any records were found
+            if ($records->isEmpty()) {
+                return response()->json(['error' => 'No records found'], 404);
+            }
+
+            // Format the response to include infant_name and vaccine_name
+            $formattedRecords = $records->map(function ($record) {
+                return [
+                    'id' => $record->id,
+                    'infant_name' => $record->infant->name,
+                    'vaccine_name' => $record->vaccine->name,
+                    'dose_number' => $record->dose_number,
+                    'barangay_id' => $record->barangay_id,
+                    'immunization_date' => $record->immunization_date,
+                    'administered_by' => $record->administered_by,
+                    'remarks' => $record->remarks,
+                ];
+            });
+
+            return response()->json(['data' => $formattedRecords], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error in server'], 500);
+        }
     }
+
+
 
     /**
      * Get a single immunization record by ID.

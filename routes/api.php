@@ -9,6 +9,7 @@ use App\Http\Controllers\InfantController;
 use App\Http\Controllers\VaccineController;
 use App\Http\Controllers\VaccineDoseController;
 use App\Http\Controllers\ImmunizationRecordController;
+use App\Http\Controllers\UpcomingVaccinationController;
 
 // Public routes (no authentication required)
 Route::post('/register', [AuthController::class, 'register']);
@@ -63,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/immunization-records/{id}', [ImmunizationRecordController::class, 'destroy']);
     Route::get('/filtered-immunization-records/{barangay_id}/{year?}', [ImmunizationRecordController::class, 'getFilteredImmunizationRecords']);
 
+    Route::get('/upcoming-vaccinations', [UpcomingVaccinationController::class, 'index']);
 });
 
 // Logout route

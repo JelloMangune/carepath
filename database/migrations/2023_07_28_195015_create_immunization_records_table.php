@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->timestamps();
 
-            $table->foreign('infant_id')->references('id')->on('infants');
+            $table->foreign('infant_id')->references('id')->on('infants')->onDelete('cascade');
             $table->foreign('barangay_id')->references('id')->on('barangays');
             $table->foreign('vaccine_id')->references('id')->on('vaccines');
         });
