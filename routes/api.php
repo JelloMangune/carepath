@@ -65,6 +65,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/filtered-immunization-records/{barangay_id}/{year?}', [ImmunizationRecordController::class, 'getFilteredImmunizationRecords']);
 
     Route::get('/upcoming-vaccinations', [UpcomingVaccinationController::class, 'index']);
+    Route::get('/missed-vaccinations', [UpcomingVaccinationController::class, 'missedVaccinationsLastWeek']);
+    Route::get('/filtered-upcoming-vaccinations', [UpcomingVaccinationController::class, 'filteredIndex']);
+    Route::get('/filtered-missed-vaccinations', [UpcomingVaccinationController::class, 'filteredMissedVaccinations']);
 });
 
 // Logout route
