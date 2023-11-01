@@ -10,17 +10,20 @@ use App\Http\Controllers\VaccineController;
 use App\Http\Controllers\VaccineDoseController;
 use App\Http\Controllers\ImmunizationRecordController;
 use App\Http\Controllers\UpcomingVaccinationController;
+use App\Http\Controllers\ForgotPasswordController;
 
 // Public routes (no authentication required)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('/update-password', [ForgotPasswordController::class, 'updatePassword']);
 
 // Private routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
     // User resource routes
     Route::get('/users', [UserController::class, 'index']); // Get all users
     Route::get('/users/{id}', [UserController::class, 'show']); // Get a single user by ID
-    Route::put('/users/{id}', [UserController::class, 'update']); // Update a user by ID
+    Route::put('/users', [UserController::class, 'update']); // Update a user by ID
     Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete a user by ID
 
     // Barangay resource routes

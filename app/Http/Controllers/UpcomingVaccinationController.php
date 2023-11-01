@@ -172,7 +172,7 @@ class UpcomingVaccinationController extends Controller
         // Restore the original timezone (if needed) to avoid affecting other parts of your application
         Config::set('app.timezone', config('app.timezone', 'UTC'));
     
-        return response()->json(['data' => $upcomingVaccinations], 200);
+        return response()->json(['data' => $upcomingVaccinations, 'current_date' => $currentDate], 200);
     }
     
     public function filteredMissedVaccinations()
@@ -180,7 +180,7 @@ class UpcomingVaccinationController extends Controller
         Config::set('app.timezone', 'Asia/Manila');
     
         $currentDate = Carbon::now();
-    
+        
         // Calculate the date one week ago
         $lastWeekDate = $currentDate->copy()->subWeek();
     

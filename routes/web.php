@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+// use App\Mail\EmailResetPassword;
+// use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/testroute', function() {
+//     $name = "Funny Coder";
+//     Mail::to(users:'irishmasiclat@gmail.com')->send(new EmailResetPassword($name));
+// });

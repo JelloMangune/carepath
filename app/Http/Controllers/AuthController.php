@@ -15,25 +15,36 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-    
-        $user = User::where('username', $request->username)->with('barangay')->first();
-    
+
+        $user = User::where('username', $request->username)
+            ->with('barangay') // Eager load the 'barangay' relationship
+            ->first();
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
+
         $token = $user->createToken('token-name')->plainTextToken;
-        
-        return response()->json([
+
+        $response = [
             'token' => $token,
             'user_type' => $user->user_type,
             'username' => $user->username,
             'name' => $user->name,
-            'id' => $user->id,
-            'barangay_id' => $user->barangay_id
-        ], 200);
+            'email' => $user->email, // Add the user's email
+            'barangay_id' => null,
+            'barangay_name' => null,
+            'barangay_location' => null,
+        ];
+
+        if ($user->barangay) {
+            $response['barangay_id'] = $user->barangay->id; // Provide the barangay ID
+            $response['barangay_name'] = $user->barangay->name; // Provide the barangay name
+            $response['barangay_location'] = $user->barangay->location; // Provide the barangay location
+        }
+
+        return response()->json($response, 200);
     }
-    
 
     public function register(Request $request)
     {
