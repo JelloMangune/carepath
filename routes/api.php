@@ -11,6 +11,7 @@ use App\Http\Controllers\VaccineDoseController;
 use App\Http\Controllers\ImmunizationRecordController;
 use App\Http\Controllers\UpcomingVaccinationController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\DashboardController;
 
 // Public routes (no authentication required)
 Route::post('/register', [AuthController::class, 'register']);
@@ -71,6 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/missed-vaccinations', [UpcomingVaccinationController::class, 'missedVaccinationsLastWeek']);
     Route::get('/filtered-upcoming-vaccinations', [UpcomingVaccinationController::class, 'filteredIndex']);
     Route::get('/filtered-missed-vaccinations', [UpcomingVaccinationController::class, 'filteredMissedVaccinations']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
 // Logout route
