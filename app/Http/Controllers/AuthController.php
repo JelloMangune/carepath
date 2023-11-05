@@ -54,12 +54,12 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users', // Add email validation
             'password' => 'required|min:6|confirmed',
             'user_type' => 'required|integer', // Add user_type validation
-            'barangay_id' => 'required|integer', // Add barangay validation
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
+            'password_reset_token' => null,
             'email' => $request->email, // Assign the email
             'password' => Hash::make($request->password),
             'user_type' => $request->user_type, // Assign the user_type
