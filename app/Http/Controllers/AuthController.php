@@ -53,7 +53,7 @@ class AuthController extends Controller
             'username' => 'required|unique:users',
             'email' => 'required|email|unique:users', // Add email validation
             'password' => 'required|min:6|confirmed',
-            'user_type' => 'required|integer', // Add user_type validation
+            'user_type' => 'required|integer',
         ]);
 
         $user = User::create([

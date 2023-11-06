@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Infant;
+use App\Models\Vaccine;
+use App\Models\VaccineDose;
+use App\Models\ImmunizationRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class InfantController extends Controller
 {
@@ -199,6 +203,79 @@ class InfantController extends Controller
         }
         
         return response()->json(['data' => $responseData], 200);
+    }
+
+    public function getImmunizationRecordsWithDetails($year = null): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+            $userType = $user->user_type;
+            $userBarangayId = $user->barangay_id;
+
+            $infantsQuery = Infant::query()->with('barangay:id,name');
+
+            if ($year) {
+                $infantsQuery->whereYear('birth_date', $year);
+            }
+
+            if ($userType === 0) {
+                $infants = $infantsQuery->get();
+            } elseif ($userType === 1) {
+                $infants = $infantsQuery->where('barangay_id', $userBarangayId)->get();
+            } else {
+                return response()->json(['error' => 'Unauthorized access'], 403);
+            }
+
+            $vaccines = Vaccine::all()->pluck('name', 'id')->toArray();
+            $vaccineDoses = VaccineDose::all()
+                ->groupBy('vaccine_id')
+                ->map(function ($vaccineDoses) {
+                    return $vaccineDoses->sortBy('dose_number');
+                });
+
+            $vaccineSorting = Vaccine::pluck('id')->toArray();
+
+            $result = $infants->map(function ($infant) use ($vaccineDoses, $vaccines, $vaccineSorting) {
+                $allVaccinationRecords = [];
+                $infantId = $infant->id; // Assuming 'id' is the primary key of the Infant model
+                foreach ($vaccineSorting as $vaccineId) {
+                    if ($vaccineDoses->has($vaccineId)) {
+                        $doses = $vaccineDoses[$vaccineId];
+                        foreach ($doses as $dose) {
+                            $immunizationDate = $this->getImmunizationDate($infantId, $vaccineId, $dose->dose_number);
+                            $allVaccinationRecords[] = [
+                                'vaccine_name' => $vaccines[$vaccineId],
+                                'vaccine_dose' => $dose->dose_number,
+                                'immunization_date' => $immunizationDate,
+                            ];
+                        }
+                    }
+                }
+
+                return [
+                    'infant' => $infant->toArray(),
+                    'immunization_records' => $allVaccinationRecords,
+                ];
+            });
+
+            return response()->json(['data' => $result], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error in server: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getImmunizationDate($infantId, $vaccineId, $doseNumber)
+    {
+        $immunizationRecord = ImmunizationRecord::where('infant_id', $infantId)
+            ->where('vaccine_id', $vaccineId)
+            ->where('dose_number', $doseNumber)
+            ->first();
+
+        if ($immunizationRecord) {
+            return $immunizationRecord->immunization_date ?? " ";
+        }
+
+        return " ";
     }
 
 }

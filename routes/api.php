@@ -24,7 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // User resource routes
     Route::get('/users', [UserController::class, 'index']); // Get all users
     Route::get('/users/{id}', [UserController::class, 'show']); // Get a single user by ID
-    Route::put('/users', [UserController::class, 'update']); // Update a user by ID
+    Route::put('/users', [UserController::class, 'update']);
+    Route::put('/users-update/{id}', [UserController::class, 'updateByAdmin']); 
     Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete a user by ID
 
     // Barangay resource routes
@@ -74,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/filtered-missed-vaccinations', [UpcomingVaccinationController::class, 'filteredMissedVaccinations']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/infants-spreadsheet/{year?}', [InfantController::class, 'getImmunizationRecordsWithDetails']);
 });
 
 // Logout route

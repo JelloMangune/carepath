@@ -23,11 +23,11 @@ class UserController extends Controller
         }
 
         // Get all users with associated barangay information if barangay_id is not null
-        $users = User::where('user_type', '!=', 0)
-                    ->with(['barangay:id,name']) // Eager load the associated barangay and select only 'id' and 'name' columns
-                    ->whereNotNull('barangay_id') // Conditionally eager load for users with a non-null barangay_id
-                    ->orderBy('barangay_id')
-                    ->get();
+        $users = User::where('username', '!=', 'admin')
+        ->with(['barangay:id,name']) // Conditionally eager load for users with a non-null barangay_id
+        ->orderBy('barangay_id')
+        ->get();
+
 
         return response()->json(['data' => $users], 200);
     }
@@ -67,6 +67,29 @@ class UserController extends Controller
         $user = Auth::user();
 
         // Check if the authenticated user is found
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update the user's attributes
+        $userData = $request->all();
+
+        // Check if the request contains a password field and hash it
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
+        $user->update($userData);
+
+        return response()->json(['data' => $user], 200);
+    }
+
+    public function updateByAdmin(Request $request, $id)
+    {
+        // Find the user by the provided $id
+        $user = User::find($id);
+
+        // Check if the user is found
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
