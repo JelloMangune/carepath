@@ -52,6 +52,7 @@ class UpcomingVaccinationController extends Controller
                     $upcomingVaccinations[] = [
                         'infant_name' => $infant->name,
                         'infant_tracking_number' => $infant->tracking_number,
+                        'infant_contact_number' => $infant->contact_number,
                         'birth_date' => $formattedBirthDate,
                         'barangay_name' => $barangay->name, // Include barangay name
                         'vaccine_name' => $dose->vaccine->name, // Include vaccine name
@@ -107,6 +108,7 @@ class UpcomingVaccinationController extends Controller
                     $missedVaccinations[] = [
                         'infant_name' => $infant->name,
                         'infant_tracking_number' => $infant->tracking_number,
+                        'infant_contact_number' => $infant->contact_number,
                         'birth_date' => $formattedBirthDate,
                         'barangay_name' => $barangay->name, // Include barangay name
                         'vaccine_name' => $dose->vaccine->name, // Include vaccine name
@@ -161,6 +163,8 @@ class UpcomingVaccinationController extends Controller
                     $formattedVaccinationDate = $vaccinationDate->format('F d, Y');
                     $upcomingVaccinations[] = [
                         'infant_name' => $infant->name,
+                        'infant_tracking_number' => $infant->tracking_number,
+                        'infant_contact_number' => $infant->contact_number,
                         'birth_date' => $formattedBirthDate,
                         'barangay_name' => $barangay->name, // Include barangay name
                         'vaccine_name' => $dose->vaccine->name, // Include vaccine name
@@ -216,6 +220,8 @@ class UpcomingVaccinationController extends Controller
                     $formattedBirthDate = Carbon::parse($infant->birth_date)->format('F d, Y');
                     $missedVaccinations[] = [
                         'infant_name' => $infant->name,
+                        'infant_tracking_number' => $infant->tracking_number,
+                        'infant_contact_number' => $infant->contact_number,
                         'birth_date' => $formattedBirthDate,
                         'barangay_name' => $barangay->name, // Include barangay name
                         'vaccine_name' => $dose->vaccine->name, // Include vaccine name
