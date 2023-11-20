@@ -278,4 +278,55 @@ class InfantController extends Controller
         return " ";
     }
 
+    public function getInfantWithVaccinationDetails($trackingNumber)
+{
+    // Get the infant by tracking number
+    $infant = Infant::where('tracking_number', $trackingNumber)->first();
+
+    if (!$infant) {
+        return response()->json(['error' => 'Infant not found'], 404);
+    }
+
+    // Get the immunization records for the infant
+    $immunizationRecords = $infant->immunizationRecords;
+
+    // Fetch all vaccines to get their names
+    $vaccines = Vaccine::all()->pluck('name', 'id')->toArray();
+
+    // Prepare the response data
+    $responseData = [
+        'infant' => $infant->toArray(),
+        'vaccine_taken' => [],
+    ];
+
+    // Iterate through vaccine doses and format the data
+    foreach (VaccineDose::all() as $dose) {
+        $vaccineId = $dose->vaccine_id;
+
+        // Check if there is an immunization record for this vaccine dose
+        $immunizationRecord = $immunizationRecords
+            ->where('vaccine_id', $vaccineId)
+            ->where('dose_number', $dose->dose_number)
+            ->first();
+
+        // Add the vaccine dose data to the response
+        $formattedRecord = [
+            'vaccine_name' => $vaccines[$vaccineId],
+            'vaccine_dose' => $dose->dose_number,
+            'immunization_date' => $immunizationRecord ? $immunizationRecord->immunization_date : " ",
+            'administered_by' => $immunizationRecord ? $immunizationRecord->administered_by : null,
+            'remarks' => $immunizationRecord ? $immunizationRecord->remarks : null,
+        ];
+
+        $responseData['vaccine_taken'][] = $formattedRecord;
+    }
+
+    return response()->json(['data' => $responseData], 200);
+}
+
+    
+
+
+
+
 }
