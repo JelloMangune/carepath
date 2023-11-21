@@ -279,53 +279,78 @@ class InfantController extends Controller
     }
 
     public function getInfantWithVaccinationDetails($trackingNumber)
-{
-    // Get the infant by tracking number
-    $infant = Infant::where('tracking_number', $trackingNumber)->first();
+    {
+        // Get the infant by tracking number
+        $infant = Infant::where('tracking_number', $trackingNumber)->first();
 
-    if (!$infant) {
-        return response()->json(['error' => 'Infant not found'], 404);
-    }
+        if (!$infant) {
+            return response()->json(['error' => 'Infant not found'], 404);
+        }
 
-    // Get the immunization records for the infant
-    $immunizationRecords = $infant->immunizationRecords;
+        // Get the immunization records for the infant
+        $immunizationRecords = $infant->immunizationRecords;
 
-    // Fetch all vaccines to get their names
-    $vaccines = Vaccine::all()->pluck('name', 'id')->toArray();
+        // Fetch all vaccines to get their names
+        $vaccines = Vaccine::all()->pluck('name', 'id')->toArray();
 
-    // Prepare the response data
-    $responseData = [
-        'infant' => $infant->toArray(),
-        'vaccine_taken' => [],
-    ];
-
-    // Iterate through vaccine doses and format the data
-    foreach (VaccineDose::all() as $dose) {
-        $vaccineId = $dose->vaccine_id;
-
-        // Check if there is an immunization record for this vaccine dose
-        $immunizationRecord = $immunizationRecords
-            ->where('vaccine_id', $vaccineId)
-            ->where('dose_number', $dose->dose_number)
-            ->first();
-
-        // Add the vaccine dose data to the response
-        $formattedRecord = [
-            'vaccine_name' => $vaccines[$vaccineId],
-            'vaccine_dose' => $dose->dose_number,
-            'immunization_date' => $immunizationRecord ? $immunizationRecord->immunization_date : " ",
-            'administered_by' => $immunizationRecord ? $immunizationRecord->administered_by : null,
-            'remarks' => $immunizationRecord ? $immunizationRecord->remarks : null,
+        // Prepare the response data
+        $responseData = [
+            'infant' => $infant->toArray(),
+            'vaccine_taken' => [],
         ];
 
-        $responseData['vaccine_taken'][] = $formattedRecord;
+        // Iterate through vaccine doses and format the data
+        foreach (VaccineDose::all() as $dose) {
+            $vaccineId = $dose->vaccine_id;
+
+            // Check if there is an immunization record for this vaccine dose
+            $immunizationRecord = $immunizationRecords
+                ->where('vaccine_id', $vaccineId)
+                ->where('dose_number', $dose->dose_number)
+                ->first();
+
+            // Add the vaccine dose data to the response
+            $formattedRecord = [
+                'vaccine_name' => $vaccines[$vaccineId],
+                'vaccine_dose' => $dose->dose_number,
+                'immunization_date' => $immunizationRecord ? $immunizationRecord->immunization_date : " ",
+                'administered_by' => $immunizationRecord ? $immunizationRecord->administered_by : null,
+                'remarks' => $immunizationRecord ? $immunizationRecord->remarks : null,
+            ];
+
+            $responseData['vaccine_taken'][] = $formattedRecord;
+        }
+
+        return response()->json(['data' => $responseData], 200);
     }
-
-    return response()->json(['data' => $responseData], 200);
-}
-
     
+    public function getOtherBarangayInfants()
+    {
+        $user = Auth::user();
+        $userBarangayId = $user->barangay_id;
 
+        $query = Infant::query()->with('barangay:id,name'); // Include barangay information
+
+        // Check if the authenticated user is not an admin (user_type not equal to 0)
+        if ($user->user_type !== 0) {
+            if (!is_null($userBarangayId)) {
+                // If the user has a barangay_id, filter infants not in the same barangay
+                $query->where('barangay_id', '!=', $userBarangayId);
+            } else {
+                // If the user has no barangay_id, return no infants (you can adjust this logic)
+                return response()->json(['data' => []], 200);
+            }
+        } else {
+            // If the user is an admin, return all infants
+            $query->whereHas('barangay', function ($query) {
+                $query->where('status', 1);
+            });
+        }
+
+        $infants = $query->orderBy('barangay_id')->orderBy('birth_date', 'desc')->get();
+
+        return response()->json(['data' => $infants], 200);
+    }
 
 
 

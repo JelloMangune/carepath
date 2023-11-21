@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\VaccineDose;
+use App\Models\Infant;
 use Illuminate\Support\Facades\Auth;
 
 class VaccineDoseController extends Controller
@@ -163,5 +164,46 @@ class VaccineDoseController extends Controller
         $vaccineDose->delete();
 
         return response()->json(['message' => 'Vaccine dose deleted successfully']);
+    }
+
+    public function indexByInfant($infant_id)
+    {
+        // Get the infant by ID
+        $infant = Infant::find($infant_id);
+
+        if (!$infant) {
+            return response()->json(['error' => 'Infant not found'], 404);
+        }
+
+        // Get all immunization records for the infant
+        $immunizationRecords = $infant->immunizationRecords;
+
+        // Get all vaccine doses with associated vaccine information where the vaccine's status is 1
+        $vaccineDoses = VaccineDose::with(['vaccine' => function ($query) {
+            $query->where('status', 1);
+        }])->get();
+
+        // Prepare the response data
+        $response = [];
+        foreach ($vaccineDoses as $dose) {
+            // Check if the vaccine and dose_number are already taken by the infant
+            $isTaken = $immunizationRecords->where('vaccine_id', $dose->vaccine_id)
+                                        ->where('dose_number', $dose->dose_number)
+                                        ->isNotEmpty();
+
+            if (!$isTaken && $dose->vaccine) {
+                $response[] = [
+                    'id' => $dose->id,
+                    'vaccine_id' => $dose->vaccine_id,
+                    'dose_number' => $dose->dose_number,
+                    'months_to_take' => $dose->months_to_take,
+                    'created_at' => $dose->created_at,
+                    'updated_at' => $dose->updated_at,
+                    'vaccine_name' => $dose->vaccine->name,
+                ];
+            }
+        }
+
+        return response()->json(['data' => $response], 200);
     }
 }
