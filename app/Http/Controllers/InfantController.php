@@ -145,6 +145,13 @@ class InfantController extends Controller
         return $trackingNumber;
     }
 
+    /**
+     * Get filtered infants based on barangay and birth year.
+     *
+     * @param  int  $barangay_id
+     * @param  int|null  $year
+     * @return \Illuminate\Http\Response
+     */
     public function getFilteredInfants($barangay_id, $year = null)
     {
         // Create a query builder for infants
@@ -167,6 +174,12 @@ class InfantController extends Controller
         return response()->json(['data' => $infants], 200);
     }
 
+    /**
+     * View the immunization history of an infant.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function viewImmunizationHistory($id)
     {
         // Get the infant by ID
@@ -205,6 +218,12 @@ class InfantController extends Controller
         return response()->json(['data' => $responseData], 200);
     }
 
+    /**
+     * Get immunization records with details.
+     *
+     * @param  int|null  $year
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getImmunizationRecordsWithDetails($year = null): JsonResponse
     {
         try {
@@ -264,6 +283,14 @@ class InfantController extends Controller
         }
     }
 
+    /**
+     * Get immunization date for a specific infant, vaccine, and dose.
+     *
+     * @param  int  $infantId
+     * @param  int  $vaccineId
+     * @param  int  $doseNumber
+     * @return string
+     */
     private function getImmunizationDate($infantId, $vaccineId, $doseNumber)
     {
         $immunizationRecord = ImmunizationRecord::where('infant_id', $infantId)
@@ -278,6 +305,12 @@ class InfantController extends Controller
         return " ";
     }
 
+    /**
+     * Get infant details with vaccination information.
+     *
+     * @param  string  $trackingNumber
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getInfantWithVaccinationDetails($trackingNumber)
     {
         // Get the infant by tracking number
@@ -324,6 +357,11 @@ class InfantController extends Controller
         return response()->json(['data' => $responseData], 200);
     }
     
+    /**
+     * Get infants from other barangays (non-admin users only).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getOtherBarangayInfants()
     {
         $user = Auth::user();

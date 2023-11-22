@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    /**
+     * Get the dashboard data.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $currentYear = Carbon::now()->year;

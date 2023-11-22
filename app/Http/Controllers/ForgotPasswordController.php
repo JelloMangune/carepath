@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
+    /**
+     * Send a password reset email to the user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function forgotPassword(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -29,6 +35,12 @@ class ForgotPasswordController extends Controller
         return response()->json(['data' => 'Password reset email sent'], 200);
     }
 
+    /**
+     * Update the user's password based on the reset token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function updatePassword(Request $request)
     {
         $request->validate([

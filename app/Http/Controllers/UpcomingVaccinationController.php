@@ -14,6 +14,11 @@ use Carbon\Carbon;
 
 class UpcomingVaccinationController extends Controller
 {
+    /**
+     * Get upcoming vaccinations for all infants.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         Config::set('app.timezone', 'Asia/Manila');
@@ -69,6 +74,11 @@ class UpcomingVaccinationController extends Controller
         return response()->json(['data' => $upcomingVaccinations], 200);
     }
 
+    /**
+     * Get missed vaccinations from the last week for all infants.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function missedVaccinationsLastWeek()
     {
         Config::set('app.timezone', 'Asia/Manila');
@@ -125,6 +135,11 @@ class UpcomingVaccinationController extends Controller
         return response()->json(['data' => $missedVaccinations], 200);
     }
 
+    /**
+     * Get upcoming vaccinations for infants in the authenticated user's barangay.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function filteredIndex()
     {
         Config::set('app.timezone', 'Asia/Manila');
@@ -181,6 +196,11 @@ class UpcomingVaccinationController extends Controller
         return response()->json(['data' => $upcomingVaccinations, 'current_date' => $currentDate], 200);
     }
     
+    /**
+     * Get missed vaccinations from the last week for infants in the authenticated user's barangay.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function filteredMissedVaccinations()
     {
         Config::set('app.timezone', 'Asia/Manila');
