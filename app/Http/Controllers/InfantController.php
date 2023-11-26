@@ -76,8 +76,11 @@ class InfantController extends Controller
             // Add other validation rules as needed
         ]);
 
-        // Generate a unique tracking number
-        $trackingNumber = $this->generateUniqueTrackingNumber();
+            // Get the barangay ID from the request
+            $barangayId = $request->input('barangay_id');
+
+            // Generate the unique tracking number based on the barangay ID
+            $trackingNumber = $this->generateUniqueTrackingNumber($barangayId);
 
         // Create the infant with the generated tracking number
         $infant = Infant::create(array_merge($request->all(), ['tracking_number' => $trackingNumber]));
@@ -131,15 +134,25 @@ class InfantController extends Controller
     /**
      * Generate a unique tracking number.
      *
+     * @param  int  $barangayId
      * @return string
      */
-    private function generateUniqueTrackingNumber()
+    private function generateUniqueTrackingNumber($barangayId)
     {
-        $trackingNumber = mt_rand(1000000000, 9999999999); // Generate a 10-digit number
+        // Prefix the barangay ID with leading zero if it's a single digit
+        $formattedBarangayId = str_pad($barangayId, 2, '0', STR_PAD_LEFT);
+
+        // Generate a 7-digit random number
+        $randomNumber = mt_rand(1000000, 9999999);
+
+        // Combine the formatted barangay ID and the random number with a dash
+        $trackingNumber = $formattedBarangayId . '-' . $randomNumber;
 
         // Check if the generated tracking number already exists in the database
         while (Infant::where('tracking_number', $trackingNumber)->exists()) {
-            $trackingNumber = mt_rand(1000000000, 9999999999);
+            // If it exists, generate a new random number
+            $randomNumber = mt_rand(1000000, 9999999);
+            $trackingNumber = $formattedBarangayId . '-' . $randomNumber;
         }
 
         return $trackingNumber;
