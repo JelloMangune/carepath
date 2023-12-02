@@ -32,8 +32,8 @@
     <div class="container">
         <h2>Reset Your Password</h2>
         <p>To reset your password, click the following link or button:</p>
-        <a href="http://127.0.0.1:8000/change-password?token={{ $token }}" class="btn">Reset Password</a>
-        <p>If the button does not work, you can also try this link: <a href="http://127.0.0.1:8000/change-password?token={{ $token }}">http://127.0.0.1:8000/change-password?token={{ $token }}</a></p>
+        <a href="https://carepath.website/change-password?token={{ $token }}" class="btn">Reset Password</a>
+        <p>If the button does not work, you can also try this link: <a href="https://carepath.website/change-password?token={{ $token }}">https://carepath.website/change-password?token={{ $token }}</a></p>
         <p>If you did not request a password reset, no further action is required.</p>
     </div>
 </body>

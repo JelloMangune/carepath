@@ -36,12 +36,6 @@ class VaccineController extends Controller
         return response()->json(['data' => $vaccine], 200);
     }
 
-    /**
-     * Store a new vaccine (admin only).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Check if the authenticated user has admin privileges (user_type = 0)
@@ -88,13 +82,6 @@ class VaccineController extends Controller
         return response()->json(['data' => ['message' => 'Vaccine deleted']], 200);
     }
 
-    /**
-     * Update the status of a vaccine (admin only).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateStatus(Request $request, $id)
     {
         // Check if the authenticated user has admin privileges (user_type = 0)
@@ -119,14 +106,6 @@ class VaccineController extends Controller
 
         return response()->json(['data' => ['message' => 'Vaccine status updated']], 200);
     }
-
-    /**
-     * Update a vaccine by ID (admin only).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // Check if the authenticated user has admin privileges (user_type = 0)

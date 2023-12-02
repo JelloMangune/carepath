@@ -166,12 +166,6 @@ class VaccineDoseController extends Controller
         return response()->json(['message' => 'Vaccine dose deleted successfully']);
     }
 
-    /**
-     * Get all available vaccine doses for a specific infant.
-     *
-     * @param  int  $infant_id
-     * @return \Illuminate\Http\Response
-     */
     public function indexByInfant($infant_id)
     {
         // Get the infant by ID

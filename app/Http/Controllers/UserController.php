@@ -84,13 +84,6 @@ class UserController extends Controller
         return response()->json(['data' => $user], 200);
     }
 
-    /**
-     * Update a user by ID (admin only).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateByAdmin(Request $request, $id)
     {
         // Find the user by the provided $id

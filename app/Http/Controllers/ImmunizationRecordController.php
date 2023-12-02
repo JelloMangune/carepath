@@ -166,13 +166,7 @@ class ImmunizationRecordController extends Controller
         return response()->json(['data' => ['message' => 'Immunization record deleted successfully'], 'error' => null]);
     }
 
-    /**
-     * Get filtered immunization records based on barangay and year.
-     *
-     * @param  string  $barangay_id
-     * @param  int|null  $year
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function getFilteredImmunizationRecords($barangay_id, $year = null)
     {
         try {

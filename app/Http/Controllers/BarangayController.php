@@ -7,46 +7,24 @@ use App\Models\Barangay;
 
 class BarangayController extends Controller
 {
-    /**
-     * Fetch all barangays.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function fetch()
     {
         $barangays = Barangay::all();
         return response()->json(['data' => $barangays]);
     }
 
-    /**
-     * Get all active barangays.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $barangays = Barangay::where('status', 1)->get();
         return response()->json(['data' => $barangays]);
     }
 
-    /**
-     * Get details of a specific barangay.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $barangay = Barangay::findOrFail($id);
         return response()->json(['data' => $barangay]);
     }
 
-    /**
-     * Store a new barangay.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -58,13 +36,6 @@ class BarangayController extends Controller
         return response()->json(['message' => 'Barangay created successfully', 'data' => $barangay], 201);
     }
 
-    /**
-     * Update a barangay.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $barangay = Barangay::findOrFail($id);
@@ -78,12 +49,6 @@ class BarangayController extends Controller
         return response()->json(['message' => 'Barangay updated successfully', 'data' => $barangay]);
     }
 
-    /**
-     * Delete a barangay.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $barangay = Barangay::findOrFail($id);
@@ -91,13 +56,6 @@ class BarangayController extends Controller
         return response()->json(['message' => 'Barangay deleted successfully']);
     }
 
-    /**
-     * Update the status of a barangay.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateStatus(Request $request, $id)
     {
         $barangay = Barangay::findOrFail($id);

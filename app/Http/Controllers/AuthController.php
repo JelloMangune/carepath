@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Log in a user and generate a token.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function login(Request $request)
     {
         $request->validate([
@@ -52,12 +46,6 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
-    /**
-     * Register a new user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function register(Request $request)
     {
         $request->validate([
@@ -84,12 +72,6 @@ class AuthController extends Controller
         return response()->json($response, 201);
     }
 
-    /**
-     * Log out the authenticated user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
