@@ -18,14 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('vaccine_id');
             $table->integer('dose_number');
             $table->date('immunization_date');
-            $table->unsignedBigInteger('administered_by');
+            $table->string('administered_by');
             $table->text('remarks')->nullable();
             $table->timestamps();
 
-            $table->foreign('infant_id')->references('id')->on('infants');
+            $table->foreign('infant_id')->references('id')->on('infants')->onDelete('cascade');
             $table->foreign('barangay_id')->references('id')->on('barangays');
             $table->foreign('vaccine_id')->references('id')->on('vaccines');
-            $table->foreign('administered_by')->references('id')->on('users');
         });
     }
 

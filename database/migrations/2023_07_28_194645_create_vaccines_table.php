@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name')->nullable();
+            $table->tinyInteger('status')->default(1); // Add the status column with default value
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

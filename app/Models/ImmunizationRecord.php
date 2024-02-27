@@ -54,13 +54,5 @@ class ImmunizationRecord extends Model
         return $this->belongsTo(Barangay::class);
     }
 
-    /**
-     * Define the relationship between ImmunizationRecord and User (Health Worker).
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function administeredBy()
-    {
-        return $this->belongsTo(User::class, 'administered_by');
-    }
+
 }

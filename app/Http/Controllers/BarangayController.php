@@ -7,9 +7,15 @@ use App\Models\Barangay;
 
 class BarangayController extends Controller
 {
-    public function index()
+    public function fetch()
     {
         $barangays = Barangay::all();
+        return response()->json(['data' => $barangays]);
+    }
+
+    public function index()
+    {
+        $barangays = Barangay::where('status', 1)->get();
         return response()->json(['data' => $barangays]);
     }
 
@@ -49,4 +55,19 @@ class BarangayController extends Controller
         $barangay->delete();
         return response()->json(['message' => 'Barangay deleted successfully']);
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $barangay = Barangay::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:0,1',
+        ]);
+
+        $barangay->update(['status' => $request->input('status')]);
+
+        return response()->json(['message' => 'Barangay status updated successfully', 'data' => $barangay]);
+    }
+
+    
 }

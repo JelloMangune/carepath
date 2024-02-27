@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Barangay;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,8 +22,12 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Get all users
-        $users = User::all();
+        // Get all users with associated barangay information if barangay_id is not null
+        $users = User::where('username', '!=', 'admin')
+        ->with(['barangay:id,name']) // Conditionally eager load for users with a non-null barangay_id
+        ->orderBy('barangay_id')
+        ->get();
+
 
         return response()->json(['data' => $users], 200);
     }
@@ -56,25 +62,47 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // Get the authenticated user
-        $authenticatedUser = Auth::user();
+        $user = Auth::user();
 
-        // Get the user by ID
-        $user = User::find($id);
-
+        // Check if the authenticated user is found
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        // Check if the authenticated user has admin privileges (user_type = 0) or is the same user
-        if ($authenticatedUser->user_type !== 0 && $authenticatedUser->id !== $user->id) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+        // Update the user's attributes
+        $userData = $request->all();
+
+        // Check if the request contains a password field and hash it
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
+        $user->update($userData);
+
+        return response()->json(['data' => $user], 200);
+    }
+
+    public function updateByAdmin(Request $request, $id)
+    {
+        // Find the user by the provided $id
+        $user = User::find($id);
+
+        // Check if the user is found
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
 
         // Update the user's attributes
-        $user->update($request->all());
+        $userData = $request->all();
+
+        // Check if the request contains a password field and hash it
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
+        $user->update($userData);
 
         return response()->json(['data' => $user], 200);
     }

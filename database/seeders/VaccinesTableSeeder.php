@@ -15,13 +15,13 @@ class VaccinesTableSeeder extends Seeder
     public function run()
     {
         DB::table('vaccines')->insert([
-            ['name' => 'BCG', 'short_name' => 'BCG'],
-            ['name' => 'Hepatitis B (Hepa B)', 'short_name' => 'Hepa B'],
-            ['name' => 'Pentavalent Vaccine (DPT-Hep-B-HiB)', 'short_name' => 'Pentavalent'],
-            ['name' => 'Oral Polio Vaccine (OPV)', 'short_name' => 'OPV'],
-            ['name' => 'Inactivated Polio Vaccine (IPV)', 'short_name' => 'IPV'],
-            ['name' => 'Pneumococcal Conjugate Vaccine (PCV)', 'short_name' => 'PCV'],
-            ['name' => 'Measles, Mumps, Rubella (MMR)', 'short_name' => 'MMR'],
+            ['name' => 'BCG', 'short_name' => 'BCG', 'status' => 1],
+            ['name' => 'Hepatitis B (Hepa B)', 'short_name' => 'Hepa B', 'status' => 1],
+            ['name' => 'Pentavalent Vaccine (DPT-Hep-B-HiB)', 'short_name' => 'Pentavalent', 'status' => 1],
+            ['name' => 'Oral Polio Vaccine (OPV)', 'short_name' => 'OPV', 'status' => 1],
+            ['name' => 'Inactivated Polio Vaccine (IPV)', 'short_name' => 'IPV', 'status' => 1],
+            ['name' => 'Pneumococcal Conjugate Vaccine (PCV)', 'short_name' => 'PCV', 'status' => 1],
+            ['name' => 'Measles, Mumps, Rubella (MMR)', 'short_name' => 'MMR', 'status' => 1],
         ]);
     }
 
